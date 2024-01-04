@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text topTextFeild;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -40,6 +42,7 @@ public class MainManager : MonoBehaviour
 
     private void Update()
     {
+        topTextFeild.text = "Highscore:" + GameManager.Instance.HighScore + "  Name: " + GameManager.Instance.HighscoreName;
         if (!m_Started)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -55,6 +58,11 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
+            if(GameManager.Instance.HighScore < m_Points){
+                GameManager.Instance.HighScore = m_Points;
+                GameManager.Instance.HighscoreName = GameManager.Instance.Name;
+            }
+            GameManager.Instance.SaveInfo();
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
